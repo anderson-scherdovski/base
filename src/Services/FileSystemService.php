@@ -15,7 +15,7 @@ class FileSystemService
      * @return false|string
      * @throws \Exception
      */
-    public static function uploadFile($file, $nameDir)
+    public static function uploadFile($file, $nameDir): string
     {
         $hash = bin2hex(random_bytes(6));
         $extension = $file->extension();
@@ -24,7 +24,7 @@ class FileSystemService
         return $path;
     }
 
-    public static function uploadBase64File($base64, $nameDir, $oldImage = null)
+    public static function uploadBase64File($base64, $nameDir, $oldImage = null): string
     {
         $name = time() . random_int(1, 33424234234234) .  '.' . FileSystemService::getMimeType(mime_content_type($base64));
         $safeName = $nameDir . '/' . $name;
@@ -37,13 +37,10 @@ class FileSystemService
         return $name;
     }
 
-    static function getMimeType($mimeType)
+    public static function getMimeType($mimeType): string
     {
-
-        $mimes = array(
+        $mimes = [
             'text/plain' => 'txt',
-            'text/html' => 'htm',
-            'text/html' => 'html',
             'text/html' => 'php',
             'text/css' => 'css',
             'application/javascript' => 'js',
@@ -54,59 +51,44 @@ class FileSystemService
 
             // images
             'image/png' => 'png',
-            'image/jpeg' => 'jpe',
-            'jimage/jpeg' => 'peg',
             'image/jpeg' => 'jpg',
             'image/gif' => 'gif',
             'image/bmp' => 'bmp',
             'image/vnd' => 'ico',
-            'timage/tiff' => 'iff',
             'image/tiff' => 'tif',
-            'svg' => 'image/svg+xml',
-            'svgz' => 'image/svg+xml',
+            'image/svg+xml' => 'svg',
 
             // archives
             'application/zip' => 'zip',
             'application/x-rar-compressed' => 'rar',
-            'application/x-msdownload' => 'exe',
             'application/x-msdownload' => 'msi',
             'application/vnd.ms-cab-compressed' => 'cab',
 
             // audio/video
             'audio/mpeg' => 'mp3',
-            'video/quicktime' => 'qt',
-            'video/quicktime' => 'mov',
             'video/quicktime' => 'mov',
 
             // adobe
             'image/vnd.adobe.photoshop' => 'psd',
             'application/pdf' => 'pdf',
-            'application/postscript' => 'ai',
-            'application/postscript' => 'eps',
             'application/postscript' => 'ps',
 
             // ms office
-            'application/msword' => 'doc',
+            'application/msword' => 'docx',
             'application/rtf' => 'rtf',
             'application/vnd.ms-excel' => 'xls',
             'application/vnd.ms-powerpoint' => 'ppt',
-            'application/msword' => 'docx',
-
 
             // open office
             'application/octet-stream' => 'ogg',
             'application/vnd.oasis.opendocument.text' => 'odt',
             'application/vnd.oasis.opendocument.spreadsheet' => 'ods',
-        );
+        ];
 
-        if (isset($mimes[$mimeType])) {
-            return $mimes[$mimeType];
-        } else {
-            return 'application/octet-stream';
-        }
+        return $mimes[$mimeType] ?? 'application/octet-stream';
     }
 
-    public static function uploadBase64FileMimetype($base64, $nameDir, $fileName, $mimetype)
+    public static function uploadBase64FileMimetype($base64, $nameDir, $fileName, $mimetype): ?string
     {
         if ($base64) {
             $arrayDir = explode('/', $nameDir);
@@ -125,6 +107,8 @@ class FileSystemService
             file_put_contents("$nameDir/$fileName.$extension", file_get_contents($base64));
             return "$fileName.$extension";
         }
+
+        return null;
     }
 
     /**
@@ -132,7 +116,7 @@ class FileSystemService
      *
      * @param string $name
      */
-    public static function removeFile($name)
+    public static function removeFile($name): void
     {
         Storage::delete($name);
     }

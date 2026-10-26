@@ -10,11 +10,8 @@ class FilterScope implements Scope
     /**
      * Apply the scope to a given Eloquent query builder.
      *
-     * @param Builder $builder
-     * @param Model $model
-     * @return void
      */
-    public function apply(Builder $builder, Model $model)
+    public function apply(Builder $builder, Model $model): void
     {
         $filters = request()->get('filters', []);
 
@@ -27,11 +24,16 @@ class FilterScope implements Scope
      * @param $filters
      * @param $builder
      */
-    public static function addFilters($filters, $builder)
+    public static function addFilters($filters, $builder): void
     {
         foreach ($filters as $key => $filter) {
 
             $array = explode(' ', $filter);
+
+            if (count($array) < 2) {
+                continue;
+            }
+
             $value = substr($filter, (strlen($array[0]) + strlen($array[1]) + 2));
             $column = $array[0];
             $operator = $array[1];
@@ -93,7 +95,7 @@ class FilterScope implements Scope
      * @param null $table
      * @param bool $and
      */
-    static function addQuery($builder, $column, $operator, $value, $table = null, $and = true)
+    public static function addQuery($builder, $column, $operator, $value, $table = null, $and = true): void
     {
 
         if ($table) {

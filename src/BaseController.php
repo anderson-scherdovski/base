@@ -14,7 +14,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Cache;
 
-class  BaseController extends Controller
+class BaseController extends Controller
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
@@ -37,7 +37,7 @@ class  BaseController extends Controller
      * @return JsonResponse|mixed
      *
      */
-    function index()
+    public function index()
     {
         $all = null;
         if ($this->canCache) {
@@ -78,7 +78,7 @@ class  BaseController extends Controller
      * Count items.
      * @param $withCount
      */
-    function addWithCount($withCount)
+    public function addWithCount($withCount)
     {
         $this->model->withCount($withCount);
     }
@@ -87,7 +87,7 @@ class  BaseController extends Controller
      * Set filter.
      * @param $filter
      */
-    function addFilter($filter)
+    public function addFilter($filter)
     {
         $filters = request()->get('filters');
         $filters[] = $filter;
@@ -98,10 +98,10 @@ class  BaseController extends Controller
      * Set filter.
      * @param $filter
      */
-    function removeFilter($filter)
+    public function removeFilter($filter)
     {
         $filters = request()->get('filters');
-        unset($filters[$filter]);;
+        unset($filters[$filter]);
         request()->merge(['filters' => $filters]);
     }
 
@@ -110,7 +110,7 @@ class  BaseController extends Controller
      * @param $key
      * @param $value
      */
-    function add($key, $value)
+    public function add($key, $value)
     {
         $items = request()->all();
         $items[$key] = $value;
@@ -189,7 +189,7 @@ class  BaseController extends Controller
      * @param $item
      * @return JsonResponse|mixed
      */
-    function returnItem($item)
+    public function returnItem($item)
     {
         $index = request()->get('index', false);
         if ($index) {
@@ -282,7 +282,7 @@ class  BaseController extends Controller
      *
      * @return JsonResponse
      *
-     * @throws Exception
+     * @throws \Exception
      */
     public function destroy($id)
     {

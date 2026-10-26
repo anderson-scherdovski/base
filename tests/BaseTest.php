@@ -5,6 +5,7 @@ namespace AndersonScherdovski\Base\Tests;
 use AndersonScherdovski\Base\Facades\Base;
 use AndersonScherdovski\Base\ServiceProvider;
 use Orchestra\Testbench\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 class BaseTest extends TestCase
 {
@@ -16,12 +17,19 @@ class BaseTest extends TestCase
     protected function getPackageAliases($app)
     {
         return [
-            'base' => Base::class,
+            'Base' => Base::class,
         ];
     }
 
-    public function testExample()
+    #[Test]
+    public function it_resolves_the_base_binding(): void
     {
-        $this->assertEquals(1, 1);
+        $this->assertInstanceOf(\AndersonScherdovski\Base\Base::class, $this->app->make('base'));
+    }
+
+    #[Test]
+    public function it_merges_the_package_config(): void
+    {
+        $this->assertIsArray(config('base'));
     }
 }

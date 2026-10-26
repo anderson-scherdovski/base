@@ -9,6 +9,11 @@
 
 Package description: CHANGE ME
 
+## Requirements
+
+- PHP 8.5+
+- Laravel 13
+
 ## Installation
 
 Install via composer

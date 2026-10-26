@@ -10,12 +10,8 @@ class OrderScope implements Scope
 {
     /**
      * Apply the scope to a given Eloquent query builder.
-     *
-     * @param Builder $builder
-     * @param Model $model
-     * @return void
      */
-    public function apply(Builder $builder, Model $model)
+    public function apply(Builder $builder, Model $model): void
     {
         $sort = request()->get('sort', 'id desc');
 
@@ -28,19 +24,27 @@ class OrderScope implements Scope
             $table = $sortArray[0];
             $sort = $sortArray[1];
 
-            $arrayData = explode(' ', $sort);
-            $column = $arrayData[0];
-            $direction = $arrayData[1];
+            [$column, $direction] = self::parseSort($sort);
 
             $builder->whereHas($table, function ($query) use ($column, $direction) {
                 $query->orderBy($column, $direction);
             });
         } else {
-            $arrayData = explode(' ', $sort);
-            $column = $arrayData[0];
-            $direction = $arrayData[1];
+            [$column, $direction] = self::parseSort($sort);
 
             $builder->orderBy($column, $direction);
         }
+    }
+
+    /**
+     * Split a "column direction" expression, defaulting the direction to asc.
+     *
+     * @return array{0: string, 1: string}
+     */
+    private static function parseSort(string $sort): array
+    {
+        $arrayData = explode(' ', trim($sort));
+
+        return [$arrayData[0], $arrayData[1] ?? 'asc'];
     }
 }
