@@ -42,10 +42,7 @@
     "laravel": {
       "providers": [
         "AndersonScherdovski\\Base\\ServiceProvider"
-      ],
-      "aliases": {
-        "Base": "AndersonScherdovski\\Base\\Facades\\Base"
-      }
+      ]
     }
   },
   "config": {

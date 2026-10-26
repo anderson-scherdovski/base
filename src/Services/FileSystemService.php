@@ -15,7 +15,7 @@ class FileSystemService
      * @return false|string
      * @throws \Exception
      */
-    public static function uploadFile($file, $nameDir): string
+    public static function uploadFile($file, $nameDir)
     {
         $hash = bin2hex(random_bytes(6));
         $extension = $file->extension();
@@ -24,7 +24,7 @@ class FileSystemService
         return $path;
     }
 
-    public static function uploadBase64File($base64, $nameDir, $oldImage = null): string
+    public static function uploadBase64File($base64, $nameDir, $oldImage = null)
     {
         $name = time() . random_int(1, 33424234234234) .  '.' . FileSystemService::getMimeType(mime_content_type($base64));
         $safeName = $nameDir . '/' . $name;
@@ -37,7 +37,7 @@ class FileSystemService
         return $name;
     }
 
-    public static function getMimeType($mimeType): string
+    public static function getMimeType($mimeType)
     {
         $mimes = [
             'text/plain' => 'txt',
@@ -88,7 +88,7 @@ class FileSystemService
         return $mimes[$mimeType] ?? 'application/octet-stream';
     }
 
-    public static function uploadBase64FileMimetype($base64, $nameDir, $fileName, $mimetype): ?string
+    public static function uploadBase64FileMimetype($base64, $nameDir, $fileName, $mimetype)
     {
         if ($base64) {
             $arrayDir = explode('/', $nameDir);
@@ -116,7 +116,7 @@ class FileSystemService
      *
      * @param string $name
      */
-    public static function removeFile($name): void
+    public static function removeFile($name)
     {
         Storage::delete($name);
     }
